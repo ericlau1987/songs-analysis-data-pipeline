@@ -9,3 +9,5 @@ https://mimesis.name/master/
 #TODO: prepare github actions to automate the whole deployment to dev/prod
 #TODO: prepare makefile
 #TODO: set the cursor the left bar same as vscode
+
+
