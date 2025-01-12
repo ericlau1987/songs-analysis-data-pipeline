@@ -22,3 +22,6 @@ prepare the config at `.pre-commit-config.yaml`
 ```
 pre-commit run --all-files
 ```
+
+streaming data
+https://github.com/viirya/eventsim/blob/master/README.md
