@@ -8,6 +8,9 @@ services:
       context: ../..
       dockerfile: Docker/streaming/eventsim.Dockerfile
     container_name: eventsim
-    # command: cd .. && cd app/eventsim-master && sh entrypoint.sh
+    command: >
+      sh -c 'echo "Preparing streaming data..." &&
+      cd eventsim-master && sh entrypoint.sh' &&
+      sh -c 'echo "Streaming data is successfully created"
     volumes:
-      - ./data/streaming_data:/app/eventsim-master/streaming_data
+      - ${PWD}/data/streaming_data:/app/eventsim-master/streaming_data
