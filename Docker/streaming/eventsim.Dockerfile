@@ -10,7 +10,7 @@ RUN apt-get update && \
 
 RUN mkdir -p /app
 
-WORKDIR /app 
+WORKDIR /app
 
 RUN wget -c https://github.com/viirya/eventsim/archive/refs/heads/master.zip && \
     unzip master.zip
