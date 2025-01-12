@@ -191,3 +191,5 @@ override.tf.json
 terraform.rc
 terraform/.terraform/
 terraform/.terraform/providers/
+
+data/
