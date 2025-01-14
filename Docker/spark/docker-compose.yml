@@ -52,11 +52,11 @@ services:
       - spark-master
 
   # python:
-  #   build: 
-  #   # The build context is the set of files that your build can access. 
-  #     # set of files that your build can access. 
+  #   build:
+  #   # The build context is the set of files that your build can access.
+  #     # set of files that your build can access.
   #     # Details can be found https://docs.docker.com/build/building/context/#what-is-a-build-context
-  #     context: ./ 
+  #     context: ./
   #     dockerfile: ../../python/python.Dockerfile
   #   volumes:
   #     - ../../:/workspace/
