@@ -1,13 +1,9 @@
 FROM cluster-base
 
 # -- Layer: JupyterLab
-
 ARG spark_version=3.3.1
 ARG jupyterlab_version=3.6.1
 
-# RUN apt-get update -y
-# RUN apt-get install -y pipx
-# RUN pipx install pyspark==${spark_version} jupyterlab==${jupyterlab_version}
 RUN apt-get update -y 
 RUN apt-get upgrade -y
 RUN apt-get install -y python3-pip 
