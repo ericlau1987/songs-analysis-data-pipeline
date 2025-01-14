@@ -1,0 +1,17 @@
+networks:
+  default:
+    name: song_analysis_data_pipeline-network
+    external: true
+services:
+  eventsim:
+    build:
+      context: ../..
+      dockerfile: Docker/streaming/eventsim.Dockerfile
+    container_name: eventsim
+    command: >
+      sh -c 'echo "Preparing streaming data..." &&
+      cd eventsim-master && sh entrypoint.sh' &&
+      sh -c 'echo "Streaming data is successfully created"
+    volumes:
+      - ${PWD}/data/streaming_data:/app/eventsim-master/streaming_data
+      - ${PWD}/Docker/streaming/entrypoint.sh:/app/eventsim-master/entrypoint.sh

@@ -1,0 +1,24 @@
+name: 'Pre-commit Action'
+description: "Run pre-commit tool"
+runs:
+  using: "composite"
+  steps:
+    - name: Install pre-commit
+      # if: steps.pip-cache.outputs.cache-hit != 'true'
+      run: pip install pre-commit -v
+      shell: bash
+
+    - run: python -m pip freeze --local
+      shell: bash
+    # - uses: pre-commit/action@v3.0.1
+
+    - name: Cache pre-commit hooks
+      id: cache-precommit
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pre-commit
+        key: pre-commit-3|${{ runner.os  }}|${{ hashFiles('.pre-commit-config.yaml') }}
+
+    - name: Run pre-commit
+      run: pre-commit run --all-files --verbose
+      shell: bash

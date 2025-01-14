@@ -1,0 +1,58 @@
+name: Songs analysis data pipeline workflow
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - uses: ./.github/actions/pre-commit
+
+
+
+# name: Songs analysis data pipeline workflow
+
+# on:
+#   workflow_dispatch: # Allows manual triggering
+#   pull_request:
+#     branches:
+#       - "master"
+#     types:
+#         - opened
+#         - closed
+#         - synchronize
+#     paths:
+#       - 'src/**'
+#       - '.github/workflows/song_analysis_data_pipeline.yml'
+
+# env:
+#     working-directory: stake/stake_com_optimove
+
+# jobs:
+#   pre-commit:
+#     runs-on: ${{ github.event.pull_request.base.ref == 'master' && format('codebuild-codebuild_dev-{0}-{1}', github.run_id, github.run_attempt) || github.event.pull_request.base.ref == 'prod' && format('codebuild-codebuild_prod-{0}-{1}', github.run_id, github.run_attempt) || format('codebuild-codebuild_dev-{0}-{1}', github.run_id, github.run_attempt) }}
+#     environment: ${{ github.event.pull_request.base.ref == 'master' && 'dev' || github.event.pull_request.base.ref == 'prod' && 'prod' || 'dev' }}
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+#       - uses: ./.github/actions/pre-commit
+
+  # app-deploy:
+  #   if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
+  #   runs-on: ${{ github.event.pull_request.base.ref == 'main' && format('codebuild-codebuild_dev-{0}-{1}', github.run_id, github.run_attempt) || github.event.pull_request.base.ref == 'prod' && format('codebuild-codebuild_prod-{0}-{1}', github.run_id, github.run_attempt) || format('codebuild-codebuild_dev-{0}-{1}', github.run_id, github.run_attempt)}}
+  #   environment: ${{ github.event.pull_request.base.ref == 'main' && 'dev' || github.event.pull_request.base.ref == 'prod' && 'prod' || 'dev' }}
+  #   needs: pre-commit
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+
+  #     - name: Deploy Glue Spark jobs
+  #       run: |
+  #         echo "artifact bucket=${{ vars.DEPLOYMENT_ARTIFACT_BUCKET }}"
+  #         aws s3 cp ${{env.working-directory}}/src/pipelines/ ${{ vars.DEPLOYMENT_ARTIFACT_BUCKET }}stake_com_optimove/pipelines/ --debug --recursive
+
+  #     - name: Deploy Airflow Dag
+  #       run: |
+  #         echo "airflow dag bucket=${{ vars.AIRFLOW_DAG_BUCKET }}"
+  #         aws s3 cp ${{env.working-directory}}/src/dag/ ${{ vars.AIRFLOW_DAG_BUCKET }} --debug --recursive --exclude "README.md" --exclude "requirements.txt"
