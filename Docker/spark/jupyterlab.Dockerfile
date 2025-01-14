@@ -18,7 +18,5 @@ RUN pip3 install wget pyspark==${spark_version} jupyterlab==${jupyterlab_version
 
 EXPOSE 8888
 WORKDIR ${SHARED_WORKSPACE}
-# CMD ["tail", "-f", "/dev/null"]
+
 CMD jupyter-lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=
-# CMD ["/root/.local/bin/jupyter-lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=''"]
-# CMD ["/root/.local/share/pipx/venvs/jupyterlab/bin/jupyter-lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=''"]
