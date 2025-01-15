@@ -1,0 +1,35 @@
+# songs_analysis_data_streaming_pipeline:
+kafka:
+  bootstrap_servers: broker:29092,localhost:9092
+  topics: 
+    auth_events: 
+      schema: |
+        StructType([
+          StructField("ts", LongType()),
+          StructField("sessionId", IntegerType()),
+          StructField("level", StringType()),
+          StructField("itemInSession", IntegerType()),
+          StructField("city", StringType()),
+          StructField("zip", StringType()),
+          StructField("state", StringType()),
+          StructField("userAgent", StringType()),
+          StructField("lon", FloatType()),
+          StructField("lat", FloatType()),
+          StructField("userId", IntegerType()),
+          StructField("lastName", StringType()),
+          StructField("firstName", StringType()),
+          StructField("gender", StringType()),
+          StructField("registration", LongType()),
+          StructField("tag", StringType()),
+          StructField("success", BooleanType())
+        ])
+    listen_events:
+      schema: 
+    page_view_events:
+      schema: 
+    status_change_events:
+      schema: 
+spark:
+  spark_jars_packages: org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.0 pyspark-shell
+
+

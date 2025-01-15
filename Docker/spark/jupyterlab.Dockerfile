@@ -10,6 +10,10 @@ RUN apt-get install -y python3-pip
 # https://stackoverflow.com/questions/75608323/how-do-i-solve-error-externally-managed-environment-every-time-i-use-pip-3
 RUN pip3 install wget pyspark==${spark_version} jupyterlab==${jupyterlab_version} --break-system-packages
 
+COPY requirements.txt .
+
+RUN pip3 install -r requirements.txt --break-system-packages
+
 # -- Runtime
 
 EXPOSE 8888

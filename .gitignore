@@ -193,3 +193,21 @@ terraform/.terraform/
 terraform/.terraform/providers/
 
 data/
+
+#pyspark
+*.pyc
+*.pyo
+*.pyd
+
+# PySpark specific
+metastore_db/
+spark-warehouse/
+derby.log
+*.parquet
+*.orc
+*.avro
+logs/
+checkpoint/
+_SUCCESS
+.Trash-*/
+*/_temporary/
