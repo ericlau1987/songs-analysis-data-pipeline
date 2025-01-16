@@ -1,8 +1,10 @@
 # songs_analysis_data_streaming_pipeline:
 kafka:
   bootstrap_servers: broker:29092,localhost:9092
-  topics: 
-    auth_events: 
+  starting_offsets: earliest
+  topics:
+    auth_events:
+      key_columns: ['userId', 'sessionId', 'ts']
       schema: |
         StructType([
           StructField("ts", LongType()),
@@ -24,12 +26,10 @@ kafka:
           StructField("success", BooleanType())
         ])
     listen_events:
-      schema: 
+      schema:
     page_view_events:
-      schema: 
+      schema:
     status_change_events:
-      schema: 
+      schema:
 spark:
   spark_jars_packages: org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.0 pyspark-shell
-
-

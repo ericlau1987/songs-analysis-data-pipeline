@@ -14,4 +14,4 @@ services:
       sh -c 'echo "Streaming data is successfully created"
     volumes:
       - ${PWD}/data/streaming_data:/app/eventsim-master/streaming_data
-      - ${PWD}/Docker/streaming/entrypoint.sh:/app/eventsim-master/entrypoint.sh
+      # - ${PWD}/Docker/streaming/entrypoint.sh:/app/eventsim-master/entrypoint.sh

@@ -8,5 +8,5 @@ chmod +x bin/eventsim
 
 # output kafka brokers
 bin/eventsim --config examples/example-config.json --tag control -n 5000 \
-    --start-time "2015-06-01T00:00:00" --end-time "2015-07-01T00:00:00" \
+    --start-time "2015-06-01T00:00:00" --end-time "2018-07-01T00:00:00" \
     --growth-rate 0.25 --userid 1 --randomseed 1 --kafkaBrokerList broker:29092,broker:9092 streaming_data/control.data.json
