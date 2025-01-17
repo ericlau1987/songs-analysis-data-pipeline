@@ -25,3 +25,8 @@ pre-commit run --all-files
 
 streaming data
 https://github.com/viirya/eventsim/blob/master/README.md
+
+run the streaming data in streaming folder
+```
+sh ./spark-submit.sh pyspark_consumer.py --topic auth_events
+```
