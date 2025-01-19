@@ -4,7 +4,7 @@ from pyspark.sql.types import *
 
 from utils import prepare_dataframe_to_kafka_sink
 
-
+#TODO: update the checkpoint location to differentiate between different topics
 class SongSparkStreaming:
     def __init__(self, 
         topic: str, 
@@ -64,7 +64,7 @@ class SongSparkStreaming:
             df: DataFrame, 
             topic: str, 
             output_mode: str = 'append', 
-            kafka_checkpoint_location: str = 'checkpoint'
+            kafka_checkpoint_location: str = f'checkpoint'
         ):
         
         df = prepare_dataframe_to_kafka_sink(df, key_column='key')
@@ -78,3 +78,17 @@ class SongSparkStreaming:
             .start()
         
         return kafka_writer
+    
+    #TODO: understand writeStream for each method usage https://github.com/divakaivan/transaction-stream-data-pipeline/blob/main/kafka-consumer/python-consumer.py#L151
+    # consider whether i can leverage it to save json file under a folder with year, month, day partition
+    def save_to_json_file(self, df: DataFrame, path: str, kafka_checkpoint_location: str):
+        
+        kafka_json_writer = df.writeStream \
+            .format("json") \
+            .option("checkpointLocation", kafka_checkpoint_location) \
+            .start(path)
+        
+        return kafka_json_writer
+    
+    #TODO: write streaming data to iceberg table which can be handled by spark batch run daily
+    

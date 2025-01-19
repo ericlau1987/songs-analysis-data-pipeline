@@ -17,6 +17,7 @@ fi
 
 TOPIC=$3
 
+#TODO understand whether need to use --packages in the spark python script
 spark-submit --master spark://spark-master:7077 --num-executors 4 \
 	         --executor-memory 2G --executor-cores 4 \
              --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.1,org.apache.spark:spark-avro_2.12:3.3.1,org.apache.spark:spark-streaming-kafka-0-10_2.12:3.3.1 \
