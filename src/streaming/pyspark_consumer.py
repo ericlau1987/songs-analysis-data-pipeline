@@ -1,5 +1,6 @@
 import argparse
 import json
+import logging
 import os
 
 import yaml
@@ -17,13 +18,10 @@ from pyspark.sql.types import (
 from SongSparkStreaming import SongSparkStreaming
 from utils import *
 
-import logging
-
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 if __name__ == "__main__":
-    
     parser = argparse.ArgumentParser(description="Kafka Consumer")
     parser.add_argument("--topic", type=str)
     args = parser.parse_args()
@@ -39,24 +37,34 @@ if __name__ == "__main__":
     SCHEMA = config["topics"][TOPIC]["schema"]
     SPARK_JARS_PACKAGES = config["spark"]["spark_jars_packages"]
     STREAMING_KEY_COLUMNS = config["topics"][TOPIC]["key_columns"]
-    
+
     config_info = {
         "BOOTSTRAP_SERVERS": BOOTSTRAP_SERVERS,
         "STARTING_OFFSETS": STARTING_OFFSETS,
         "SCHEMA": SCHEMA,
         "SPARK_JARS_PACKAGES": SPARK_JARS_PACKAGES,
-        "STREAMING_KEY_COLUMNS": STREAMING_KEY_COLUMNS
+        "STREAMING_KEY_COLUMNS": STREAMING_KEY_COLUMNS,
     }
-    
+
     logger.info(f"Config info: {config_info}")
 
     os.environ["PYSPARK_SUBMIT_ARGS"] = f"--packages {SPARK_JARS_PACKAGES}"
+
+    # Option 1:
+    # TODO: write streming data into iceberg table
+    # TODO: enable the compaction for iceberg table
+    # TODO: before streaming data, ensure use DDL to create iceberg tables
+
+    # Option 2:
+    # TODO: write streaming data into json file with partitions
+    # TODO: use each batch to write to json file
 
     try:
         logger.info("Initializing SongSparkStreaming")
         song_spark_streaming = SongSparkStreaming(
             topic=TOPIC,
             schema=SCHEMA,
+            kafka_checkpoint_location=f"checkpoint/{TOPIC}",
             spark_app_name="song-analysis-pipeline",
             spark_jars_packages=SPARK_JARS_PACKAGES,
             kafka_bootstrap_servers=BOOTSTRAP_SERVERS,
@@ -69,16 +77,17 @@ if __name__ == "__main__":
 
         logger.info("Transforming data")
         df = transform_epcho_to_timestamp(df, "ts")
+        df = transform_datetime_to_day_month_year(df, "ts")
         df = hash_key(df, STREAMING_KEY_COLUMNS)
         df = df.drop("value")
         df = df.withColumn("key", df.key.cast(StringType()))
 
         logger.info("Writing data to Kafka")
-        kafka_writer = song_spark_streaming.write_to_kafka(df, topic=f"{TOPIC}_transformed")
-
+        # kafka_writer = song_spark_streaming.write_to_kafka(df, topic=f"{TOPIC}_transformed")
+        kafka_writer = song_spark_streaming.write_to_json_file(df)
         logger.info("Waiting for termination")
         song_spark_streaming.spark.streams.awaitAnyTermination()
-        
+
     except Exception as e:
         logger.error(f"Error: {e}")
         raise e

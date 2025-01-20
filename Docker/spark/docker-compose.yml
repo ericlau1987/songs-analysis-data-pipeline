@@ -16,6 +16,7 @@ services:
     volumes:
       - shared-workspace:/opt/workspace
       - ../../src/streaming/:/opt/workspace/
+      - ../../src/streaming_data/:/opt/workspace/streaming_data/
   spark-master:
     image: spark-master
     container_name: spark-master

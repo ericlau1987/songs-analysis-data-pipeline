@@ -1,5 +1,14 @@
 from pyspark.sql import DataFrame
-from pyspark.sql.functions import col, from_unixtime, hash, struct, to_json
+from pyspark.sql.functions import (
+    col,
+    dayofmonth,
+    from_unixtime,
+    hash,
+    month,
+    struct,
+    to_json,
+    year,
+)
 
 
 def sink_console(df, output_mode: str = "complete", processing_time: str = "5 seconds"):
@@ -43,4 +52,13 @@ def transform_epcho_to_timestamp(
 
 def hash_key(dataframe: DataFrame, columns: list) -> DataFrame:
     dataframe = dataframe.withColumn("key", hash(*columns))
+    return dataframe
+
+
+def transform_datetime_to_day_month_year(
+    dataframe: DataFrame, timestamp_column: str
+) -> DataFrame:
+    dataframe = dataframe.withColumn("day", dayofmonth(col(timestamp_column)))
+    dataframe = dataframe.withColumn("month", month(col(timestamp_column)))
+    dataframe = dataframe.withColumn("year", year(col(timestamp_column)))
     return dataframe
